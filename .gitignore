@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+*.egg-info/
+
+# 上传文件
+backend/uploads/*
+
+# 环境变量（含 API Key）
+.env
+
+# IDE
+.vscode/
+.idea/

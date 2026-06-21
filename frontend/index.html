@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课件智析 - CourseMind</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ========== 顶部导航栏 ========== -->
+    <header class="navbar">
+        <div class="nav-left">
+            <span class="logo">🧠 课件智析</span>
+            <span class="logo-sub">CourseMind</span>
+        </div>
+        <div class="nav-right">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">就绪</span>
+        </div>
+    </header>
+
+    <!-- ========== 主布局 ========== -->
+    <div class="main-container">
+
+        <!-- ========== 左侧边栏 ========== -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">📤 课件上传</div>
+                <!-- 上传区域 -->
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">拖拽文件到此处</p>
+                    <p class="upload-hint">或点击选择文件</p>
+                    <input type="file" id="fileInput" hidden accept=".pdf,.ppt,.pptx">
+                </div>
+                <!-- 已上传文件列表 -->
+                <div class="file-list" id="fileList"></div>
+                <!-- 解析按钮 -->
+                <button class="btn btn-primary" id="btnParse" disabled>
+                    🔍 解析课件
+                </button>
+            </div>
+
+            <!-- 模块导航 -->
+            <nav class="sidebar-nav">
+                <div class="sidebar-title">📋 功能模块</div>
+                <button class="nav-btn active" data-module="summary">
+                    <span class="nav-icon">📝</span> AI课程总结
+                </button>
+                <button class="nav-btn" data-module="exam">
+                    <span class="nav-icon">⭐</span> 考试重点
+                </button>
+                <button class="nav-btn" data-module="framework">
+                    <span class="nav-icon">🌳</span> 知识框架
+                </button>
+                <button class="nav-btn" data-module="mindmap">
+                    <span class="nav-icon">🧩</span> 思维导图
+                </button>
+                <button class="nav-btn" data-module="quiz">
+                    <span class="nav-icon">📝</span> 练习题
+                </button>
+                <button class="nav-btn" data-module="chat">
+                    <span class="nav-icon">💬</span> AI问答
+                </button>
+            </nav>
+        </aside>
+
+        <!-- ========== 主内容区 ========== -->
+        <main class="content">
+
+            <!-- 模块1: AI课程总结 -->
+            <section class="module active" id="module-summary">
+                <h2>📝 AI 课程总结</h2>
+                <div class="card">
+                    <h3>📖 课程概述</h3>
+                    <div class="card-body" id="summary-overview">
+                        <p class="placeholder">上传课件后，AI 将自动生成课程概述</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔑 核心知识点</h3>
+                    <div class="card-body" id="summary-keypoints">
+                        <p class="placeholder">上传课件后，AI 将提取核心知识点</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔗 章节关系</h3>
+                    <div class="card-body" id="summary-relations">
+                        <p class="placeholder">上传课件后，AI 将分析章节关系</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块2: 考试重点 -->
+            <section class="module" id="module-exam">
+                <h2>⭐ 考试重点</h2>
+                <div class="card-body" id="exam-content">
+                    <p class="placeholder">上传课件后，AI 将提炼考试重点（★★★★★ 评级）</p>
+                </div>
+            </section>
+
+            <!-- 模块3: 知识框架 -->
+            <section class="module" id="module-framework">
+                <h2>🌳 知识框架</h2>
+                <div class="card">
+                    <div class="card-body" id="framework-content">
+                        <p class="placeholder">上传课件后，AI 将生成树状知识框架</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块4: 思维导图 -->
+            <section class="module" id="module-mindmap">
+                <h2>🧩 思维导图</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mindmap-toolbar">
+                            <button class="btn btn-small" id="btnExportImage">📥 导出图片</button>
+                            <button class="btn btn-small" id="btnExportMD">📥 导出Markdown</button>
+                        </div>
+                        <div id="mindmap-content">
+                            <p class="placeholder">上传课件后，AI 将生成思维导图</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块5: 练习题 -->
+            <section class="module" id="module-quiz">
+                <h2>📝 练习题</h2>
+                <div class="card">
+                    <div class="card-body" id="quiz-content">
+                        <p class="placeholder">上传课件后，AI 将自动生成练习题（含答案）</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块6: AI问答 -->
+            <section class="module" id="module-chat">
+                <h2>💬 AI 问答</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-msg system">
+                            <p>👋 你好！上传课件后，你可以向我提问任何关于课程内容的问题。</p>
+                            <p>例如：「糖酵解的关键酶是什么？」</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text"
+                               id="chatInput"
+                               class="chat-input"
+                               placeholder="输入你的问题..."
+                               disabled>
+                        <button class="btn btn-primary" id="btnSend" disabled>发送</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 加载动画 -->
+            <div class="loading-overlay" id="loadingOverlay" hidden>
+                <div class="loading-spinner"></div>
+                <p id="loadingText">正在处理...</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
