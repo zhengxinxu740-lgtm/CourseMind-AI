@@ -13,11 +13,22 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-# === PDF 解析库 ===
-from PyPDF2 import PdfReader
+# === PDF 解析库（兼容 PyPDF2 和 pypdf）===
+try:
+    from PyPDF2 import PdfReader
+except ImportError:
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        PdfReader = None
+        print("[警告] PDF 解析库未安装，PDF 功能不可用")
 
 # === PPT/PPTX 解析库 ===
-from pptx import Presentation
+try:
+    from pptx import Presentation
+except ImportError:
+    Presentation = None
+    print("[警告] python-pptx 未安装，PPT 功能不可用")
 
 # === 修复 Windows 中文/Emoji 编码问题 ===
 if sys.platform == "win32":
@@ -133,6 +144,19 @@ def call_deepseek(prompt: str, system_prompt: str = None, temperature: float = 0
 def index():
     """返回主页面"""
     return send_from_directory(str(FRONTEND_DIR), "index.html")
+
+
+@app.route("/api/health", methods=["GET"])
+def health_check():
+    """健康检查接口"""
+    frontend_ok = FRONTEND_DIR.exists() and (FRONTEND_DIR / "index.html").exists()
+    return jsonify({
+        "status": "ok",
+        "frontend": frontend_ok,
+        "pdf_support": PdfReader is not None,
+        "pptx_support": Presentation is not None,
+        "api_key_set": bool(DEEPSEEK_API_KEY),
+    })
 
 
 @app.route("/css/<path:filename>")
